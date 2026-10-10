@@ -19,4 +19,4 @@
 - Evidence for slash dates: first number above 12 in 823 rows, second number above 12 in 0 rows
 - Decision: read slash dates as day/month/year, then convert all of Order_Date to a real date type
 - Assumption: all slash dates follow the same day/month/year order, including the 517 where both numbers are 12 or below
-- Check later: Order_Date should come before Expected_Delivery_Date
+- Verified: with slash dates read as day/month/year, the gap between Order_Date and Expected_Delivery_Date is 5 to 45 days (average about 25) in all 4000 rows, with 0 negative gaps
