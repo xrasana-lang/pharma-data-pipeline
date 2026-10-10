@@ -1,0 +1,13 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environment (uv can rebuild it)
+.venv/
+
+# Data: keep the folders, ignore the files inside
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
