@@ -7,8 +7,9 @@
 - Reason: Merck is the most common spelling, and the supplier is assumed to be local
 - Rows are renamed, not removed, and each row keeps its own Supplier_ID
 
-## D2: Supplier_ID and Country look inconsistent (OPEN)
+## D2: Supplier_ID and Country look inconsistent (DOCUMENTED, NOT FIXED)
 - Finding: the 17 Merck rows have 17 different Supplier_IDs and 5 different countries
 - Only 5 of the 17 are in South Africa, which does not fit the assumption that the supplier is local
-- Status: open, nothing changed yet
-- Next: check the Data_Dictionary sheet to see what Country is meant to record
+- Status: documented, not fixed
+- Finding: Data_Dictionary only has one generic line per sheet and does not define Country. The workbook says the data is synthetic with embedded quality issues
+- Rule: leave Country unchanged and do not use it in analysis until its meaning is confirmed
