@@ -35,3 +35,11 @@
 - Status: documented, not fixed
 - Rule: leave both columns unchanged and do not use Temperature_Range for storage checks until its meaning is confirmed
 
+## D5: Missing Lot_Number and Storage_Location in Batch_Inventory
+- Finding: 100 of 6000 batches have no Lot_Number, and 116 have no Storage_Location. Only 2 rows are missing both, so the gaps look unrelated
+- Evidence: the gaps are spread across all four statuses with no clear pattern
+- Decision: fill missing Lot_Number with "Unknown", and leave missing Storage_Location as a true missing value
+- Reason: Lot_Number is only a label, while Storage_Location links to the Storage_Locations table and a placeholder code would find no match in a join
+- Note: D4 also applies to this table, so the 14 rows with a bad Expiry_Date keep their gap and get a flag
+
+
