@@ -20,3 +20,11 @@
 - Decision: read slash dates as day/month/year, then convert all of Order_Date to a real date type
 - Assumption: all slash dates follow the same day/month/year order, including the 517 where both numbers are 12 or below
 - Verified: with slash dates read as day/month/year, the gap between Order_Date and Expected_Delivery_Date is 5 to 45 days (average about 25) in all 4000 rows, with 0 negative gaps
+
+## D4: Bad Expiry_Date in Batch_Inventory
+- Finding: 14 of 6000 batches have an Expiry_Date 5 days before their Manufacture_Date
+- Evidence: all 14 have a life of -5 days, spread across statuses: 7 Expired, 3 Active, 3 Consumed, 1 Disposed
+- Not repairable: only 1932 of 6000 batches have a life equal to the reagent's Shelf_Life_Days, and the rest differ by whole years, so the correct date cannot be worked out
+- Decision: keep the 14 rows, set Expiry_Date to missing, and add a flag column marking them
+- Reason: keeps the batch records without letting a wrong date into any calculation
+- Open: Current_Status does not seem to follow Expiry_Date, because Expired and Active batches have overlapping expiry ranges. Not resolved yet
