@@ -28,3 +28,10 @@
 - Decision: keep the 14 rows, set Expiry_Date to missing, and add a flag column marking them
 - Reason: keeps the batch records without letting a wrong date into any calculation
 - Open: Current_Status does not seem to follow Expiry_Date, because Expired and Active batches have overlapping expiry ranges. Not resolved yet
+
+## D6: Storage_Type and Temperature_Range do not match in Storage_Locations
+- Finding: Storage_Type and Temperature_Range look unrelated. Only 6 of 16 Freezers are at -20C, and only 1 of 9 Refrigerators is at 2-8C. Ambient locations include -20C (5) and 2-8C (5)
+- Checked: all 5884 storage codes in Batch_Inventory exist in Storage_Locations, there are no duplicate IDs, and all 50 locations are used
+- Status: documented, not fixed
+- Rule: leave both columns unchanged and do not use Temperature_Range for storage checks until its meaning is confirmed
+
