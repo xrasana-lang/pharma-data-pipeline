@@ -29,3 +29,17 @@ print("still missing after combining:", parsed.isna().sum())
 gap = (df["Expected_Delivery_Date"] - parsed).dt.days
 print(gap.describe())
 print("negative gaps:", (gap < 0).sum())
+
+# Save the cleaned table
+# - copy df so the original stays untouched
+# - replace Order_Date with the parsed dates
+# - write to data/processed as Parquet
+cleaned = df.copy()
+cleaned["Order_Date"] = parsed
+cleaned.to_parquet("data/processed/purchase_orders.parquet", index=False)
+
+# Read it back to prove it worked
+# - check shape and column types
+check = pd.read_parquet("data/processed/purchase_orders.parquet")
+print(check.shape)
+print(check.dtypes)
