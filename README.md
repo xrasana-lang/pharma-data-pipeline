@@ -34,7 +34,7 @@ flowchart TD
 
     CS -->|"D1: rename Merck variants<br/>D2: Country left alone"| OUT
     CPO -->|"D3: parse mixed date formats"| OUT
-        CB -->|"D4: flag and blank bad Expiry_Date<br/>D5: fill Lot_Number only"| OUT
+    CB -->|"D4: flag and blank bad Expiry_Date<br/>D5: fill Lot_Number only"| OUT
     CR -->|"D7: fill Hazard_Class with Unknown<br/>D8: labels left alone"| OUT
 
     OUT["data/processed<br/>typed Parquet"]
