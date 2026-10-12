@@ -11,7 +11,8 @@
 - Finding: the 17 Merck rows have 17 different Supplier_IDs and 5 different countries
 - Only 5 of the 17 are in South Africa, which does not fit the assumption that the supplier is local
 - Status: documented, not fixed
-- Finding: Data_Dictionary only has one generic line per sheet and does not define Country. The workbook says the data is synthetic with embedded quality issues
+- - Finding: the Data_Dictionary sheet has one generic line per sheet and does not define Country, so the meaning of the column is undocumented
+- Domain note: a supplier record normally holds the country where the supplier is registered or ships from. One supplier name under five countries suggests Country may record something else, such as the shipping origin, and needs confirming with Procurement
 - Rule: leave Country unchanged and do not use it in analysis until its meaning is confirmed
 
 ## D3: Standardise Order_Date in Purchase_Orders
@@ -31,6 +32,7 @@
 
 ## D6: Storage_Type and Temperature_Range do not match in Storage_Locations
 - Finding: Storage_Type and Temperature_Range look unrelated. Only 6 of 16 Freezers are at -20C, and only 1 of 9 Refrigerators is at 2-8C. Ambient locations include -20C (5) and 2-8C (5)
+- Domain note: refrigerated storage is normally 2-8C, frozen about -20C and ambient about 15-25C, so a Freezer at 2-8C is not a consistent combination. QA or facilities should confirm which column is correct
 - Checked: all 5884 storage codes in Batch_Inventory exist in Storage_Locations, there are no duplicate IDs, and all 50 locations are used
 - Status: documented, not fixed
 - Rule: leave both columns unchanged and do not use Temperature_Range for storage checks until its meaning is confirmed
@@ -48,8 +50,17 @@
 - Reason: Hazard_Class is a plain label that, as far as we have seen, no other table links to, so a placeholder cannot break a join. An explicit Unknown keeps these reagents visible in any breakdown by hazard class and cannot be mistaken for "not hazardous"
 
 ## D8: Some Hazard_Class labels look implausible (DOCUMENTED, NOT FIXED)
-- Finding: some labels look implausible for the reagent from general chemistry. REA0004 Acetonitrile HPLC Grade is Corrosive, and REA0003 Paracetamol Reference Standard is Flammable. Only the first 5 rows were looked at, so this is not checked across the table
+- - Finding: some labels do not match the usual classification. REA0004 Acetonitrile HPLC Grade is labelled Corrosive, but acetonitrile is normally classified as a flammable liquid. REA0003 Paracetamol Reference Standard is labelled Flammable, but paracetamol is a solid with no flammable classification. Only the first 5 rows were looked at, so this is not checked across the table
 - Status: documented, not fixed
-- Rule: leave existing labels unchanged. The project has no reliable source to correct them against, and the data is synthetic
+- - Rule: leave existing labels unchanged. The project has no authoritative source, such as a safety data sheet, to correct them against. The safety officer should confirm them
+
+## D10: Cross-table links do not agree on dates or reagents (DOCUMENTED, NOT FIXED)
+- Finding: in a test join with order numbers repaired by row position, 1992 of 4000 receipts are dated before their order, and the gap ranges from -1067 to 1078 days
+- Domain note: a goods receipt cannot be dated before the order it fulfils, so these dates or links need confirming with Procurement
+- Finding: a batch's Reagent_ID equals the Reagent_ID of its order in only 24 of 5961 cases (0.4%), no better than a random match across 250 reagents
+- Domain note: a batch received against an order should be the reagent that was ordered, so the receipt-to-order link looks unreliable
+- Checked: the keys themselves link cleanly. Every batch has a receipt, every order's supplier and reagent exists, and every batch's reagent exists
+- Status: documented, not fixed
+- Rule: do not use order-to-receipt date gaps or the batch-to-order reagent link in analysis. Use the key links only
 
 

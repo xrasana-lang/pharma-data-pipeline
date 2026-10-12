@@ -2,7 +2,7 @@
 
 A learning project that builds a data pipeline for a pharmaceutical reagent inventory and waste dataset.
 
-The data is **synthetic, but it is based on real-world data**. Real data could not be used for confidentiality reasons. The workbook also states that it was generated with embedded quality issues, so the profiling and cleaning steps have real problems to find. The Excel files stay in `data/raw` and are never pushed to GitHub.
+The data is **synthetic, but it is based on real-world data**. Real data could not be used for confidentiality reasons. The profiling and cleaning steps address the data quality problems found in it. The Excel files stay in `data/raw` and are never pushed to GitHub.
 
 ## Status
 
@@ -18,7 +18,7 @@ The data is **synthetic, but it is based on real-world data**. Real data could n
 
 ```mermaid
 flowchart TD
-    RAW["data/raw<br/>Excel workbooks<br/>synthetic, embedded issues"]
+    RAW["data/raw<br/>Excel workbooks"]
 
     RAW --> PR[profile_reagents.py]
     RAW --> PS[profile_suppliers.py]
