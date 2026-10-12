@@ -9,7 +9,7 @@ The data is **synthetic, but it is based on real-world data**. Real data could n
 | Table | Profiled | Cleaned | Decisions |
 |---|---|---|---|
 | Suppliers | Yes | Yes | D1, D2 |
-| Purchase_Orders | Yes | Yes | D3 |
+| Purchase_Orders | Yes | Yes | D3, D9 |
 | Batch_Inventory | Yes | Yes | D4, D5 |
 | Storage_Locations | Yes | Not changed | D6 |
 | Reagents | Partly | Yes | D7, D8 |
@@ -33,7 +33,7 @@ flowchart TD
     PB -.->|D6: documented, not fixed| SL[("Storage_Locations<br/>unchanged, not saved")]
 
     CS -->|"D1: rename Merck variants<br/>D2: Country left alone"| OUT
-    CPO -->|"D3: parse mixed date formats"| OUT
+    CPO -->|"D3: parse mixed date formats<br/>D9: repair repeated PO_Number"| OUT
     CB -->|"D4: flag and blank bad Expiry_Date<br/>D5: fill Lot_Number only"| OUT
     CR -->|"D7: fill Hazard_Class with Unknown<br/>D8: labels left alone"| OUT
 
@@ -61,6 +61,8 @@ The full reasoning and evidence for each decision is in `docs/decisions.md`.
 | D6 | Storage_Locations | Storage_Type and Temperature_Range do not match. Documented, not fixed |
 | D7 | Reagents | Fill missing Hazard_Class with Unknown |
 | D8 | Reagents | Some Hazard_Class labels look implausible. Documented, not fixed |
+   | D9 | Purchase_Orders | Repair 17 repeated PO000123 numbers by row position and keep the original value |
+   | D10 | Receipts and Batches | Order-to-receipt dates and the batch-to-order reagent link are unreliable. Documented, not fixed |
 
 ## Project layout
 
