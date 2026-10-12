@@ -36,6 +36,15 @@ print("negative gaps:", (gap < 0).sum())
 # - write to data/processed as Parquet
 cleaned = df.copy()
 cleaned["Order_Date"] = parsed
+# D9: repeated PO_Number
+# - expected number = "PO" + row position, padded to 6 digits
+# - rows whose number differs from their position get repaired
+# - old value kept in PO_Number_Original, flag marks the rows
+expected = "PO" + pd.Series(cleaned.index + 1).astype(str).str.zfill(6)
+repaired = cleaned["PO_Number"] != expected
+cleaned["PO_Number_Original"] = cleaned["PO_Number"]
+cleaned["PO_Number_Repaired"] = repaired
+cleaned.loc[repaired, "PO_Number"] = expected[repaired]
 cleaned.to_parquet("data/processed/purchase_orders.parquet", index=False)
 
 # Read it back to prove it worked
@@ -43,3 +52,5 @@ cleaned.to_parquet("data/processed/purchase_orders.parquet", index=False)
 check = pd.read_parquet("data/processed/purchase_orders.parquet")
 print(check.shape)
 print(check.dtypes)
+print("PO_Number unique:", check["PO_Number"].is_unique)
+print("PO numbers repaired:", check["PO_Number_Repaired"].sum())

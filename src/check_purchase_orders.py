@@ -9,12 +9,14 @@ raw = pd.read_excel("data/raw/Ubuntu_Pharma_Inventory_Dataset.xlsx", sheet_name=
 clean = pd.read_parquet("data/processed/purchase_orders.parquet")
 
 # Same size?
-# - True means same rows and columns
-print("same shape:", raw.shape == clean.shape)
+# - rows only (clean has extra columns)
+print("same rows:", len(raw) == len(clean))
+print("new columns:", set(clean.columns) - set(raw.columns))
 
-# Same values, column by column?
-# - raw[col] == clean[col] compares row by row
-# - .all() is True only if every row matches
+# Rows changed per column
+# - a row counts as changed if the values differ
+# - two missing values count as the same
 for col in raw.columns:
-    same = (raw[col] == clean[col]).all()
-    print(col, "unchanged:", same)
+    differs = ~((raw[col] == clean[col]) | (raw[col].isna() & clean[col].isna()))
+    print(col, "rows changed:", differs.sum())
+    
