@@ -2,7 +2,7 @@
 
 A learning project that builds a data pipeline for a pharmaceutical reagent inventory and waste dataset.
 
-The data is **synthetic**. The workbook states it was generated with embedded quality issues, so the profiling and cleaning steps have real problems to find. The Excel files stay in `data/raw` and are never pushed to GitHub.
+The data is **synthetic, but it is based on real-world data**. Real data could not be used for confidentiality reasons. The workbook also states that it was generated with embedded quality issues, so the profiling and cleaning steps have real problems to find. The Excel files stay in `data/raw` and are never pushed to GitHub.
 
 ## Status
 
@@ -12,7 +12,7 @@ The data is **synthetic**. The workbook states it was generated with embedded qu
 | Purchase_Orders | Yes | Yes | D3 |
 | Batch_Inventory | Yes | Yes | D4, D5 |
 | Storage_Locations | Yes | Not changed | D6 |
-| Reagents | Yes | Not yet | D7 pending |
+| Reagents | Partly | Yes | D7, D8 |
 
 ## Data flow
 
@@ -26,7 +26,7 @@ flowchart TD
     RAW --> PB["profile_batch_inventory.py<br/>also checks Storage_Locations"]
     RAW --> DD[read_data_dictionary.py]
 
-    PR -.->|D7 pending| CR["clean Reagents<br/>not written yet"]
+    PR --> CR[clean_reagents.py]
     PS --> CS[clean_suppliers.py]
     PPO --> CPO[clean_purchase_orders.py]
     PB --> CB[clean_batch_inventory.py]
@@ -34,15 +34,16 @@ flowchart TD
 
     CS -->|"D1: rename Merck variants<br/>D2: Country left alone"| OUT
     CPO -->|"D3: parse mixed date formats"| OUT
-    CB -->|"D4: flag and blank bad Expiry_Date<br/>D5: fill Lot_Number only"| OUT
+        CB -->|"D4: flag and blank bad Expiry_Date<br/>D5: fill Lot_Number only"| OUT
+    CR -->|"D7: fill Hazard_Class with Unknown<br/>D8: labels left alone"| OUT
 
     OUT["data/processed<br/>typed Parquet"]
 
     OUT --> CK1[check_purchase_orders.py]
     OUT --> CK2[check_batch_inventory.py]
+    OUT --> CK3[check_reagents.py]
     OUT --> NEXT["next: database, SQL, tests, orchestration"]
 
-    style CR fill:#f9e79f
     style SL fill:#f9e79f
 ```
 
@@ -58,6 +59,8 @@ The full reasoning and evidence for each decision is in `docs/decisions.md`.
 | D4 | Batch_Inventory | Blank the 14 bad Expiry_Date values and flag them |
 | D5 | Batch_Inventory | Fill missing Lot_Number with Unknown, leave missing Storage_Location |
 | D6 | Storage_Locations | Storage_Type and Temperature_Range do not match. Documented, not fixed |
+| D7 | Reagents | Fill missing Hazard_Class with Unknown |
+| D8 | Reagents | Some Hazard_Class labels look implausible. Documented, not fixed |
 
 ## Project layout
 
