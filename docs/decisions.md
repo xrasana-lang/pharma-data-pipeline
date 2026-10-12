@@ -63,4 +63,13 @@
 - Status: documented, not fixed
 - Rule: do not use order-to-receipt date gaps or the batch-to-order reagent link in analysis. Use the key links only
 
+## D9: Repeated PO000123 in Purchase_Orders
+- Finding: PO000123 appears on 18 different orders, so PO_Number is not unique. The 18 orders differ in supplier, reagent, department, quantity, cost, dates and officer, so they are not duplicates
+- Evidence: 3983 of 4000 order numbers equal "PO" plus the row position, and 17 numbers in that sequence (for example PO000177 and PO000186) are used by no order. The 17 rows carrying PO000123 in the wrong position are the ones that should hold them
+- Evidence: 19 receipts use those 17 unused numbers and have no matching order
+- Decision: give each of the 17 rows the number for its row position, keep the old value in PO_Number_Original, and add the flag PO_Number_Repaired
+- Reason: the evidence for the original numbers is strong, and keeping the old value and a flag makes the change visible and reversible
+- Limit: the receipts cannot confirm which repaired number belongs to which receipt (see D10), so the row position is the basis
+- The genuine PO000123 order at row 123 is unchanged
+
 
