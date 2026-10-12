@@ -42,4 +42,14 @@
 - Reason: Lot_Number is only a label, while Storage_Location links to the Storage_Locations table and a placeholder code would find no match in a join
 - Note: D4 also applies to this table, so the 14 rows with a bad Expiry_Date keep their gap and get a flag
 
+## D7: Missing Hazard_Class in Reagents
+- Finding: 82 of 250 reagents have no Hazard_Class. No other Reagents column has gaps
+- Decision: fill missing Hazard_Class with "Unknown"
+- Reason: Hazard_Class is a plain label that, as far as we have seen, no other table links to, so a placeholder cannot break a join. An explicit Unknown keeps these reagents visible in any breakdown by hazard class and cannot be mistaken for "not hazardous"
+
+## D8: Some Hazard_Class labels look implausible (DOCUMENTED, NOT FIXED)
+- Finding: some labels look implausible for the reagent from general chemistry. REA0004 Acetonitrile HPLC Grade is Corrosive, and REA0003 Paracetamol Reference Standard is Flammable. Only the first 5 rows were looked at, so this is not checked across the table
+- Status: documented, not fixed
+- Rule: leave existing labels unchanged. The project has no reliable source to correct them against, and the data is synthetic
+
 
