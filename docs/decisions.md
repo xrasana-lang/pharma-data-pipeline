@@ -79,5 +79,17 @@
 - Consequence: waste totals will not match totals built from the recorded cost. The two totals will be compared in a reconciliation
 - Limit: Cost_Per_Unit_ZAR is one price per reagent, so past waste is valued at that price and not at the price when it was wasted
 
+## D12: Waste records do not agree with their batches (DOCUMENTED, NOT FIXED)
+- Finding: a waste record's Reagent_ID equals the Reagent_ID of its batch in 4 of 2000 cases, no better than a random match across 250 reagents
+- Finding: 803 of 2000 waste records are dated before the manufacture date of their batch
+- Finding: 286 of 352 records with reason Expired are dated before the batch expiry date, a median of 476 days before
+- Finding: only 84 of 352 Expired records sit on batches with status Expired (24%), against 25% of all waste records
+- Domain note: waste cannot happen before a batch is made, and an Expired waste record should fall on or after the expiry date and belong to an expired batch
+- Checked: every Batch_ID and Reagent_ID on waste records exists, and the join does not multiply rows
+- Status: documented, not fixed
+- Rule: analyse waste using the waste record's own columns (reason, reagent, department, date, quantity, cost). Do not use batch dates, status or storage location through the waste-to-batch link
+- Open question: it is not known whether Batch_ID or Waste_Reason is the unreliable column, and the laboratory should confirm how waste is recorded
+
+
 
 
