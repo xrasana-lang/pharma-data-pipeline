@@ -4,6 +4,12 @@ A learning project that builds a data pipeline for a pharmaceutical reagent inve
 
 The data is **synthetic, but it is based on real-world data**. Real data could not be used for confidentiality reasons. The profiling and cleaning steps address the data quality problems found in it. The Excel files stay in `data/raw` and are never pushed to GitHub.
 
+## Purpose
+
+This project supports a study of why so much reagent stock is wasted in a pharmaceutical laboratory, and what could reduce it. Possible causes include expired reagents and contamination, and possible improvements are in how reagents are ordered and stored. The wider aim is a process where chemicals are ordered on time, stored correctly, tracked from order to use and available when needed, with as little waste as possible.
+
+The pipeline cleans and validates the ordering, receiving, inventory and waste records so that analysis of these questions can be trusted. Where records disagree, for example waste cost, batch status and expiry dates, the disagreement is itself a finding about tracking. These findings are recorded in `docs/decisions.md`.
+
 ## Status
 
 | Table | Profiled | Cleaned | Decisions |
