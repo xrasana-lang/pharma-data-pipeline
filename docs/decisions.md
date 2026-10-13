@@ -72,4 +72,12 @@
 - Limit: the receipts cannot confirm which repaired number belongs to which receipt (see D10), so the row position is the basis
 - The genuine PO000123 order at row 123 is unchanged
 
+## D11: Waste_Cost_ZAR does not follow quantity x unit cost
+- Finding: Waste_Cost_ZAR equals Quantity_Wasted x Cost_Per_Unit_ZAR in 0 of 2000 rows. The correlation between recorded cost and quantity is 0.04, and with the expected cost it is 0.03
+- Domain rule: the cost of waste is the quantity wasted multiplied by the reagent's cost per unit, so this is how it is calculated going forward
+- Decision: set Waste_Cost_ZAR to Quantity_Wasted x Cost_Per_Unit_ZAR from the Reagents table, and keep the recorded value in Waste_Cost_Original_ZAR
+- Consequence: waste totals will not match totals built from the recorded cost. The two totals will be compared in a reconciliation
+- Limit: Cost_Per_Unit_ZAR is one price per reagent, so past waste is valued at that price and not at the price when it was wasted
+
+
 
